@@ -29,8 +29,8 @@ const getTasks: RequestHandler<{}, {}, {}, TaskQuery> = async (req, res) => {
       const tasks = await Task.find();
       res.json(tasks);
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ message: error?.message || 'An unknown error occurred' });
   }
 };
 
@@ -49,8 +49,8 @@ const createTask: RequestHandler<{}, {}, TaskBody> = async (req, res) => {
 
     const newTask = await task.save();
     res.status(201).json(newTask);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  } catch (error: any) {
+    res.status(400).json({ message: error?.message || 'Failed to create task' });
   }
 };
 
@@ -70,8 +70,8 @@ const updateTask: RequestHandler<TaskParams, {}, Partial<TaskBody>> = async (req
     task.isChecked = req.body.isChecked ?? task.isChecked;
     const updatedTask = await task.save();
     res.json(updatedTask);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  } catch (error: any) {
+    res.status(400).json({ message: error?.message || 'Failed to update task' });
   }
 };
 

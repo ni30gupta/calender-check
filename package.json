@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "tsc -b && vite build",
+    "build:backend": "tsc -p server/tsconfig.json",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "tsx server/index.ts",
-    "start": "concurrently \"npm run dev\" \"npm run server\""
+    "start": "node dist/server/index.js",
+    "dev:start": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
