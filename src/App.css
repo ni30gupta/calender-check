@@ -179,3 +179,12 @@ h1 {
 .empty-tile:hover {
   transform: none !important;
 }
+
+.current-month {
+  text-align: center;
+  margin: 15px 0;
+  color: #92a28e;
+  font-size: 1.1em;
+  font-weight: bold;
+  
+}

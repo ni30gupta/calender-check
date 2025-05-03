@@ -150,10 +150,23 @@ const App = () => {
 
   return (
     <div className="app-container">
+      <h3>Good Mornig Miss Babita...</h3>
+      <h4>Did the milk get delivered today?</h4>
       <div className="calendar-header">
         <button className="nav-button" onClick={handlePreviousMonth}>←</button>
-        <h1>{formatMonthYear(currentDate)}</h1>
+        <h2>{today.toLocaleString('default', { 
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric' 
+        })}</h2>
         <button className="nav-button" onClick={handleNextMonth}>→</button>
+      </div>
+      <div className="current-month">
+        {currentDate.toLocaleString('default', { 
+          month: 'long',
+          year: 'numeric' 
+        })}
       </div>
       <div className="calendar-grid">
         {weekDays.map(day => (
