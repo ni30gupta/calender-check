@@ -1,0 +1,15 @@
+{
+  "short_name": "Task Calendar",
+  "name": "Task Calendar PWA",
+  "icons": [
+    {
+      "src": "vite.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#646cff",
+  "background_color": "#ffffff"
+}
