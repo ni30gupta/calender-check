@@ -238,18 +238,22 @@ const App = () => {
       </div>
 
       <div className="date-range-selector">
-        <form  style={{display:'flex', flexDirection:'column', width:'50%', alignItems:"center"}} onSubmit={handleDateRangeSubmit}>
-          <input 
-            type="date" 
-            value={startDate ? startDate.toISOString().split('T')[0] : ''} 
-            onChange={(e) => setStartDate(new Date(e.target.value))}
-          />
-          <input 
-            type="date" 
-            value={endDate ? endDate.toISOString().split('T')[0] : ''}
-            onChange={(e) => setEndDate(new Date(e.target.value))}
-          />
-          <button type="submit">View Range</button>
+        <form style={{display:'flex', flexDirection:'row', justifyContent:'space-between', gap:5, padding:5}}  onSubmit={handleDateRangeSubmit}>
+          <div style={{ display: 'flex',gap:5, flexDirection: 'column', width: '50%', alignItems: "center" }}>
+            <input
+              type="date"
+              value={startDate ? startDate.toISOString().split('T')[0] : ''}
+              onChange={(e) => setStartDate(new Date(e.target.value))}
+            />
+            <input
+              type="date"
+              value={endDate ? endDate.toISOString().split('T')[0] : ''}
+              onChange={(e) => setEndDate(new Date(e.target.value))}
+            />
+          </div>
+          <div style={{alignSelf:'center', width:'40%'}}>
+            <button type="submit">View Range</button>
+          </div>
           {dateRangeActive && (
             <button type="button" onClick={resetDateRange}>Reset</button>
           )}
