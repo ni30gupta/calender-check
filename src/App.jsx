@@ -196,9 +196,10 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <h3>Good Morning Miss Babita...</h3>
-      <h4>Did you get the milk delivered today?</h4>
-      <hr style={{height:0.1, margin:'20px 0px'}}/>
+      <p>Good Morning Miss Babita... <br /> <span>
+        Did you get the milk delivered today?
+      </span> </p>
+      {/* <hr style={{height:0.1, margin:'20px 0px'}}/> */}
       
 
       <div className="calendar-header">
@@ -237,7 +238,7 @@ const App = () => {
       </div>
 
       <div className="date-range-selector">
-        <form onSubmit={handleDateRangeSubmit}>
+        <form  style={{display:'flex', flexDirection:'column', width:'50%', alignItems:"center"}} onSubmit={handleDateRangeSubmit}>
           <input 
             type="date" 
             value={startDate ? startDate.toISOString().split('T')[0] : ''} 
@@ -248,7 +249,7 @@ const App = () => {
             value={endDate ? endDate.toISOString().split('T')[0] : ''}
             onChange={(e) => setEndDate(new Date(e.target.value))}
           />
-          <button style={{width:'50%', alignSelf:"center"}} type="submit">View Range</button>
+          <button type="submit">View Range</button>
           {dateRangeActive && (
             <button type="button" onClick={resetDateRange}>Reset</button>
           )}
