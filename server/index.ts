@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'http://localhost:5173',
+    'https://calender-check.vercel.app/',
     'https://task-calendar-app.vercel.app',
     'https://calender-check-nhoushdnd-ni30guptas-projects.vercel.app'
   ],
