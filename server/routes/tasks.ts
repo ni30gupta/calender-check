@@ -6,14 +6,25 @@ const router = Router();
 interface TaskQuery {
   month?: string;
   year?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
-// Get tasks with optional month/year filter
+// Get tasks with optional date range or month/year filter
 const getTasks: RequestHandler<{}, {}, {}, TaskQuery> = async (req, res) => {
   try {
-    const { month, year } = req.query;
+    const { month, year, startDate, endDate } = req.query;
     
-    if (month && year) {
+    if (startDate && endDate) {
+      // Use provided date range
+      const tasks = await Task.find({
+        date: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate)
+        }
+      });
+      res.json(tasks);
+    } else if (month && year) {
       // Create date range for the specified month
       const startDate = new Date(Number(year), Number(month), 1);
       const endDate = new Date(Number(year), Number(month) + 1, 0);

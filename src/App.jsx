@@ -6,7 +6,11 @@ const App = () => {
   const [daysInMonth, setDaysInMonth] = useState([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [today] = useState(new Date())
-  const [tasks, setTasks] = useState({}) // Map of date strings to task objects
+  const [tasks, setTasks] = useState({})
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [dateRangeActive, setDateRangeActive] = useState(false)
+  const [totalTickedCount, setTotalTickedCount] = useState(0)
 
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -15,15 +19,37 @@ const App = () => {
     fetchTasks()
   }, [currentDate])
 
+  useEffect(() => {
+    if (dateRangeActive && startDate && endDate) {
+      fetchDateRangeTasks()
+    }
+  }, [dateRangeActive, startDate, endDate])
+
+  const fetchDateRangeTasks = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+      const url = `${apiUrl}/api/tasks?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
+      
+      const response = await fetch(url)
+      const data = await response.json()
+      const tickedCount = data.filter(task => task.isChecked).length
+      setTotalTickedCount(tickedCount)
+    } catch (error) {
+      console.error('Error fetching date range tasks:', error)
+    }
+  }
+
   const fetchTasks = async () => {
     try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
       const month = currentDate.getMonth()
       const year = currentDate.getFullYear()
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-      const response = await fetch(`${apiUrl}/api/tasks?month=${month}&year=${year}`)
+      const url = `${apiUrl}/api/tasks?month=${month}&year=${year}`
+      
+      const response = await fetch(url)
       const data = await response.json()
       const taskMap = {}
-      setSelectedDays(new Set()) // Clear previous selections before setting new ones
+      setSelectedDays(new Set())
       
       data.forEach(task => {
         const taskDate = new Date(task.date)
@@ -34,6 +60,10 @@ const App = () => {
         }
       })
       setTasks(taskMap)
+      
+      if (!dateRangeActive) {
+        setTotalTickedCount(data.filter(task => task.isChecked).length)
+      }
     } catch (error) {
       console.error('Error fetching tasks:', error)
     }
@@ -148,26 +178,47 @@ const App = () => {
     }
   }
 
+  const handleDateRangeSubmit = (e) => {
+    e.preventDefault()
+    if (startDate && endDate) {
+      setDateRangeActive(true)
+      fetchDateRangeTasks()
+    }
+  }
+
+  const resetDateRange = () => {
+    setDateRangeActive(false)
+    setStartDate(null)
+    setEndDate(null)
+    setTotalTickedCount(0)
+    fetchTasks()
+  }
+
   return (
     <div className="app-container">
-      <h3>Good Mornig Miss Babita...</h3>
-      <h4>Did the milk get delivered today?</h4>
+      <h3>Good Morning Miss Babita...</h3>
+      <h4>Did you get the milk delivered today?</h4>
+      <hr style={{height:0.1, margin:'20px 0px'}}/>
+      
+
       <div className="calendar-header">
         <button className="nav-button" onClick={handlePreviousMonth}>←</button>
-        <h2>{today.toLocaleString('default', { 
+        <h3>{today.toLocaleString('default', { 
           weekday: 'long',
           day: 'numeric',
           month: 'long',
           year: 'numeric' 
-        })}</h2>
+        })}</h3>
         <button className="nav-button" onClick={handleNextMonth}>→</button>
       </div>
+      
       <div className="current-month">
         {currentDate.toLocaleString('default', { 
           month: 'long',
           year: 'numeric' 
         })}
       </div>
+
       <div className="calendar-grid">
         {weekDays.map(day => (
           <div key={day} className="weekday-header">
@@ -183,6 +234,34 @@ const App = () => {
             {day}
           </div>
         ))}
+      </div>
+
+      <div className="date-range-selector">
+        <form onSubmit={handleDateRangeSubmit}>
+          <input 
+            type="date" 
+            value={startDate ? startDate.toISOString().split('T')[0] : ''} 
+            onChange={(e) => setStartDate(new Date(e.target.value))}
+          />
+          <input 
+            type="date" 
+            value={endDate ? endDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => setEndDate(new Date(e.target.value))}
+          />
+          <button style={{width:'50%', alignSelf:"center"}} type="submit">View Range</button>
+          {dateRangeActive && (
+            <button type="button" onClick={resetDateRange}>Reset</button>
+          )}
+        </form>
+      </div>
+
+      <div className="stats-container">
+        <p>Total Milk : {dateRangeActive ? totalTickedCount : selectedDays.size} lt.</p>
+        {dateRangeActive && (
+          <p className="date-range-info">
+            Showing count from {startDate?.toLocaleDateString()} to {endDate?.toLocaleDateString()}
+          </p>
+        )}
       </div>
     </div>
   )

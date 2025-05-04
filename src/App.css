@@ -49,28 +49,30 @@
 }
 
 .app-container {
-  max-width: 800px;
+  max-width: 100%;
+  padding: 15px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  padding: 20px;
+  gap: 5px;
+  margin: 10px 0;
 }
 
 .day-tile {
   aspect-ratio: 1;
   background-color: #181616;
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 1px solid #333;
+  padding: 5px;
 }
 
 .day-tile:hover {
@@ -122,10 +124,10 @@ h1 {
 
 .calendar-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 0 20px;
+  align-items: center;
+  margin: 10px 0;
+  padding: 0 10px;
 }
 
 .calendar-header h1 {
@@ -134,19 +136,21 @@ h1 {
   margin: 0 20px;
 }
 
+.calendar-header h2 {
+  font-size: 1rem;
+  text-align: center;
+  margin: 0;
+  flex: 1;
+}
+
 .nav-button {
-  background-color: #4CAF50;
-  color: white;
+  padding: 8px 12px;
+  font-size: 1.2rem;
+  background: #4CAF50;
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
+  border-radius: 4px;
+  color: white;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
 }
 
 .nav-button:hover {
@@ -167,13 +171,15 @@ h1 {
 .weekday-header {
   font-weight: bold;
   color: #4CAF50;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 .empty-tile {
   background-color: transparent !important;
   cursor: default !important;
+  border: none;
 }
 
 .empty-tile:hover {
@@ -182,9 +188,113 @@ h1 {
 
 .current-month {
   text-align: center;
-  margin: 15px 0;
+  margin: 10px 0;
   color: #92a28e;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   font-weight: bold;
-  
+}
+
+.date-range-selector {
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #181616;
+  border-radius: 8px;
+}
+
+.date-range-selector form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date-range-selector input[type="date"] {
+  padding: 8px;
+  border: 1px solid #4CAF50;
+  border-radius: 4px;
+  background-color: #242424;
+  color: white;
+  width: 100%;
+  max-width: 100%;
+}
+
+.date-range-selector button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.stats-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #181616;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stats-container p {
+  font-size: 1.4rem;
+  color: #b8c1b8;
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.date-range-info {
+  font-size: 0.85rem !important;
+  color: #92a28e !important;
+  margin-top: 8px !important;
+}
+
+/* Media Queries for larger screens */
+@media (min-width: 768px) {
+  .app-container {
+    max-width: 768px;
+    padding: 20px;
+  }
+
+  .calendar-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .day-tile {
+    font-size: 1rem;
+  }
+
+  .date-range-selector form {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .date-range-selector input[type="date"] {
+    width: auto;
+  }
+
+  .date-range-selector button {
+    width: auto;
+    min-width: 120px;
+  }
+
+  .stats-container p {
+    font-size: 1.4rem;
+  }
+}
+
+/* Additional styles for the existing classes */
+.checked {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.current-day {
+  border: 2px solid #4CAF50;
+}
+
+.empty-tile {
+  background-color: transparent;
+  border: none;
+  cursor: default;
 }
